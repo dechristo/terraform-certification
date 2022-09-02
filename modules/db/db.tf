@@ -9,7 +9,3 @@ resource "aws_instance" "my_ec2_db" {
     Name = "DB Server"
   }
 }
-
-module "db_server" {
-  source = "./db"
-}
