@@ -1,21 +1,22 @@
-provider "aws" {
-  region = "eu-central-1"
+
+data "aws_instance" "db_search" {
+  filter {
+    name = "tag:Name"
+    values = ["DB Server"]
+  } 
 }
 
-resource "aws_instance" "my_ec2_micro" {
-  ami = "ami-0e2031728ef69a466"
-  instance_type = "t2.micro"
-
-  tags = {
-    Name = "App server"
-  }
-  depends_on = [aws_instance.my_ec2_db]
+data "aws_instance" "ec2_search" {
+  filter {
+    name = "tag:Name"
+    values = ["App server"]
+  } 
 }
 
-resource "aws_instance" "my_ec2_db" {
-  ami           = "ami-0e2031728ef69a466"
-  instance_type = "t2.micro"
-  tags = {
-    Name = "DB Server"
-  }
+output "db_servers" {
+  value = data.aws_instance.db_search.availability_zone
+}
+
+output "app_servers" {
+  value = data.aws_instance.ec2_search.availability_zone
 }
